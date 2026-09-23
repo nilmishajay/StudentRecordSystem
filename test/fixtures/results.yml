@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enrolment: one
+  mark: 9.99
+  grade: MyString
+
+two:
+  enrolment: two
+  mark: 9.99
+  grade: MyString
