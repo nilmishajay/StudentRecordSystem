@@ -1,0 +1,54 @@
+<div class="card student-form-card">
+  <%= form_with model: enrolment do |form| %>
+    <% if enrolment.errors.any? %>
+      <div class="alert alert-error" role="alert">
+        <h3>Please correct the following <%= pluralize(enrolment.errors.count, "error") %>:</h3>
+        <ul>
+          <% enrolment.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :student_id, "Student" %>
+      <%= form.select :student_id,
+            options_for_select(@students.map { |student| ["#{student.student_number} — #{student.first_name} #{student.last_name}", student.id] }, enrolment.student_id),
+            { prompt: "Select a student" },
+            { required: true, class: "form-control" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :unit_id, "Academic Unit" %>
+      <%= form.select :unit_id,
+            options_for_select(@units.map { |unit| ["#{unit.code} — #{unit.name} (#{unit.course.name})", unit.id] }, enrolment.unit_id),
+            { prompt: "Select a unit" },
+            { required: true, class: "form-control" } %>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :semester %>
+        <%= form.select :semester,
+              options_for_select(["Semester 1", "Semester 2", "Summer"], enrolment.semester),
+              { prompt: "Select a semester" },
+              { required: true, class: "form-control" } %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :academic_year, "Academic Year" %>
+        <%= form.number_field :academic_year,
+              min: 1,
+              max: Date.current.year + 10,
+              required: true,
+              class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Create Enrolment", class: "btn btn-primary" %>
+      <%= link_to "Cancel", enrolment.student_id.present? ? student_path(enrolment.student_id) : enrolments_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

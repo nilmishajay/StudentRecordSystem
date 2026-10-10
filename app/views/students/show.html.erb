@@ -12,6 +12,13 @@
   </div>
 </div>
 
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
+
 <div class="card student-details-card">
   <h2>
     <%= @student.first_name %> <%= @student.last_name %>
@@ -41,25 +48,48 @@
 </div>
 
 <div class="card">
-  <h2>Enrolled Units</h2>
+  <div class="page-header">
+    <div>
+      <h2>Academic Record</h2>
+      <p class="page-description">Unit enrolments by semester and academic year.</p>
+    </div>
+    <%= link_to "＋ Enrol in Unit", new_enrolment_path(student_id: @student.id), class: "btn btn-primary" %>
+  </div>
 
-  <% if @student.units.any? %>
-    <div class="table-container">
-      <table>
+  <% if @enrolments.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
         <thead>
           <tr>
             <th>Unit Code</th>
             <th>Unit Name</th>
             <th>Credits</th>
+            <th>Semester</th>
+            <th>Academic Year</th>
+            <th>Mark</th>
+            <th>Grade</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          <% @student.units.each do |unit| %>
+          <% @enrolments.each do |enrolment| %>
             <tr>
-              <td><%= unit.code %></td>
-              <td><%= unit.name %></td>
-              <td><%= unit.credit %></td>
+              <td><%= link_to enrolment.unit.code, unit_path(enrolment.unit), class: "action-link" %></td>
+              <td><%= enrolment.unit.name %></td>
+              <td><%= enrolment.unit.credit %></td>
+              <td><%= enrolment.semester %></td>
+              <td><%= enrolment.academic_year %></td>
+              <td><%= enrolment.result&.mark || "—" %></td>
+              <td><%= enrolment.result&.grade || "—" %></td>
+              <td class="table-actions">
+                <%= link_to "Details", enrolment_path(enrolment), class: "action-link" %>
+                <% unless enrolment.result %>
+                  <%= button_to "Remove", enrolment_path(enrolment), method: :delete,
+                        class: "action-link action-delete",
+                        form: { data: { turbo_confirm: "Remove this unit enrolment?" } } %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -69,5 +99,6 @@
     <p class="page-description">
       No units have been enrolled for this student yet.
     </p>
+    <%= link_to "Enrol in a Unit", new_enrolment_path(student_id: @student.id), class: "btn btn-primary" %>
   <% end %>
 </div>

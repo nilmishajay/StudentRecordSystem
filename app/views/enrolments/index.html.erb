@@ -1,0 +1,50 @@
+<div class="page-header">
+  <div>
+    <h1>Unit Enrolments</h1>
+    <p class="page-description">Review student unit enrolments by semester and academic year.</p>
+  </div>
+  <%= link_to "＋ Enrol Student", new_enrolment_path, class: "btn btn-primary" %>
+</div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="card">
+  <% if @enrolments.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr><th>Student</th><th>Unit</th><th>Semester</th><th>Academic Year</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% @enrolments.each do |enrolment| %>
+            <tr>
+              <td><%= link_to "#{enrolment.student.student_number} — #{enrolment.student.first_name} #{enrolment.student.last_name}", student_path(enrolment.student), class: "action-link" %></td>
+              <td><%= link_to "#{enrolment.unit.code} — #{enrolment.unit.name}", unit_path(enrolment.unit), class: "action-link" %></td>
+              <td><%= enrolment.semester %></td>
+              <td><%= enrolment.academic_year %></td>
+              <td class="table-actions">
+                <%= link_to "View", enrolment_path(enrolment), class: "action-link" %>
+                <% unless enrolment.result %>
+                  <%= button_to "Remove", enrolment_path(enrolment), method: :delete,
+                        class: "action-link action-delete",
+                        form: { data: { turbo_confirm: "Remove this unit enrolment?" } } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <h3>No enrolments yet</h3>
+      <p>Enrol students in units to build their academic records.</p>
+      <%= link_to "Enrol Student", new_enrolment_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

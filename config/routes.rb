@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :students
   resources :courses
   resources :units
+  resources :enrolments, only: %i[index show new create destroy]
   resources :results
 
   get "home/index"

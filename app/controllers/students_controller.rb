@@ -6,6 +6,7 @@ class StudentsController < ApplicationController
   end
 
   def show
+    @enrolments = @student.enrolments.includes(:result, unit: :course).order(academic_year: :desc, semester: :asc)
   end
 
   def new
