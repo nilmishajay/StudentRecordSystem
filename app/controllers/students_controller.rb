@@ -7,6 +7,7 @@ class StudentsController < ApplicationController
 
   def show
     @enrolments = @student.enrolments.includes(:result, unit: :course).order(academic_year: :desc, semester: :asc)
+    @wam = @student.wam
   end
 
   def new

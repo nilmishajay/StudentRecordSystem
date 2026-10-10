@@ -2,9 +2,17 @@
 <div class="page-header">
   <div>
     <h1>Academic Results</h1>
-    <p class="page-description">View student marks and grades.</p>
+    <p class="page-description">Record and review student marks and grades.</p>
   </div>
+  <%= link_to "＋ Record Result", new_result_path, class: "btn btn-primary" %>
 </div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
 
 <div class="card">
   <% if @results.any? %>
@@ -19,6 +27,7 @@
             <th>Academic Year</th>
             <th>Mark</th>
             <th>Grade</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -28,12 +37,16 @@
             <% unit = enrolment.unit %>
             <tr>
               <td><%= student.student_number %></td>
-              <td><%= "#{student.first_name} #{student.last_name}" %></td>
-              <td><%= unit.code %> — <%= unit.name %></td>
+              <td><%= link_to "#{student.first_name} #{student.last_name}", student_path(student), class: "action-link" %></td>
+              <td><%= link_to "#{unit.code} — #{unit.name}", unit_path(unit), class: "action-link" %></td>
               <td><%= enrolment.semester %></td>
               <td><%= enrolment.academic_year %></td>
               <td><%= result.mark %></td>
               <td><%= result.grade %></td>
+              <td class="table-actions">
+                <%= link_to "View", result_path(result), class: "action-link" %>
+                <%= link_to "Edit", edit_result_path(result), class: "action-link" %>
+              </td>
             </tr>
           <% end %>
         </tbody>

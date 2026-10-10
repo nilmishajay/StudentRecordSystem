@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :courses
   resources :units
   resources :enrolments, only: %i[index show new create destroy]
-  resources :results
+  resources :results, only: %i[index show new create edit update]
 
   get "home/index"
   get "up" => "rails/health#show", as: :rails_health_check

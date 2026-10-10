@@ -57,4 +57,33 @@ class StudentTest < ActiveSupport::TestCase
     assert @existing_student.errors[:base].any?
     assert Student.exists?(@existing_student.id)
   end
+
+  test "calculates WAM using credits and excludes units without valid results" do
+    first_unit = Unit.create!(code: "UNIT-#{SecureRandom.hex(4)}", name: "First Unit", credit: 10, course: @course)
+    second_unit = Unit.create!(code: "UNIT-#{SecureRandom.hex(4)}", name: "Second Unit", credit: 30, course: @course)
+    ungraded_unit = Unit.create!(code: "UNIT-#{SecureRandom.hex(4)}", name: "Ungraded Unit", credit: 100, course: @course)
+
+    first_enrolment = Enrolment.create!(student: @existing_student, unit: first_unit, semester: "Semester 1", academic_year: 2026)
+    second_enrolment = Enrolment.create!(student: @existing_student, unit: second_unit, semester: "Semester 1", academic_year: 2026)
+    Enrolment.create!(student: @existing_student, unit: ungraded_unit, semester: "Semester 2", academic_year: 2026)
+    Result.create!(enrolment: first_enrolment, mark: "80.00", grade: "D")
+    Result.create!(enrolment: second_enrolment, mark: "70.00", grade: "D")
+
+    assert_equal BigDecimal("72.5"), @existing_student.wam
+  end
+
+  test "includes boundary marks of zero and one hundred in WAM" do
+    zero_unit = Unit.create!(code: "UNIT-#{SecureRandom.hex(4)}", name: "Zero Unit", credit: 15, course: @course)
+    hundred_unit = Unit.create!(code: "UNIT-#{SecureRandom.hex(4)}", name: "Hundred Unit", credit: 15, course: @course)
+    zero_enrolment = Enrolment.create!(student: @existing_student, unit: zero_unit, semester: "Semester 1", academic_year: 2026)
+    hundred_enrolment = Enrolment.create!(student: @existing_student, unit: hundred_unit, semester: "Semester 1", academic_year: 2026)
+    Result.create!(enrolment: zero_enrolment, mark: 0, grade: "Pass")
+    Result.create!(enrolment: hundred_enrolment, mark: 100, grade: "High")
+
+    assert_equal BigDecimal("50"), @existing_student.wam
+  end
+
+  test "returns nil when no valid marks are recorded" do
+    assert_nil @existing_student.wam
+  end
 end

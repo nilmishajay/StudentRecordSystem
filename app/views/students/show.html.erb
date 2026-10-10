@@ -44,6 +44,10 @@
       <span class="detail-label">Course Code</span>
       <span class="detail-value"><%= @student.course.code %></span>
     </div>
+    <div class="detail-item">
+      <span class="detail-label">Weighted Average Mark (WAM)</span>
+      <span class="detail-value"><%= @wam ? format("%.2f", @wam) : "Not available" %></span>
+    </div>
   </div>
 </div>
 
@@ -68,6 +72,7 @@
             <th>Academic Year</th>
             <th>Mark</th>
             <th>Grade</th>
+            <th>Result Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -82,9 +87,13 @@
               <td><%= enrolment.academic_year %></td>
               <td><%= enrolment.result&.mark || "—" %></td>
               <td><%= enrolment.result&.grade || "—" %></td>
+              <td><%= enrolment.result ? "Recorded" : "No result recorded" %></td>
               <td class="table-actions">
                 <%= link_to "Details", enrolment_path(enrolment), class: "action-link" %>
-                <% unless enrolment.result %>
+                <% if enrolment.result %>
+                  <%= link_to "Edit Result", edit_result_path(enrolment.result), class: "action-link" %>
+                <% else %>
+                  <%= link_to "Record Result", new_result_path(enrolment_id: enrolment.id), class: "action-link" %>
                   <%= button_to "Remove", enrolment_path(enrolment), method: :delete,
                         class: "action-link action-delete",
                         form: { data: { turbo_confirm: "Remove this unit enrolment?" } } %>

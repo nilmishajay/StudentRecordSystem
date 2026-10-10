@@ -1,0 +1,38 @@
+<div class="card student-form-card">
+  <%= form_with model: result do |form| %>
+    <% if result.errors.any? %>
+      <div class="alert alert-error" role="alert">
+        <h3>Please correct the following <%= pluralize(result.errors.count, "error") %>:</h3>
+        <ul>
+          <% result.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :enrolment_id, "Student unit enrolment" %>
+      <%= form.select :enrolment_id,
+            options_for_select(@enrolments.map { |enrolment| ["#{enrolment.student.student_number} — #{enrolment.student.first_name} #{enrolment.student.last_name} | #{enrolment.unit.code} — #{enrolment.unit.name} | #{enrolment.semester} #{enrolment.academic_year}", enrolment.id] }, result.enrolment_id),
+            { prompt: "Select an enrolment" },
+            { required: true, class: "form-control" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :mark, "Mark (0–100)" %>
+      <%= form.number_field :mark, min: 0, max: 100, step: "any", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :grade, "Grade" %>
+      <%= form.text_field :grade, required: true, class: "form-control" %>
+      <p class="page-description">Enter the grade according to your institution's approved grading policy.</p>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit(result.persisted? ? "Update Result" : "Record Result", class: "btn btn-primary") %>
+      <%= link_to "Cancel", result.persisted? ? result_path(result) : results_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

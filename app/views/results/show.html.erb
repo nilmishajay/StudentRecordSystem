@@ -1,0 +1,43 @@
+<div class="page-header">
+  <div>
+    <h1>Academic Result</h1>
+    <p class="page-description">Mark and grade for an enrolled unit.</p>
+  </div>
+  <div class="form-actions">
+    <%= link_to "Edit Result", edit_result_path(@result), class: "btn btn-primary" %>
+    <%= link_to "All Results", results_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="card student-details-card">
+  <div class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Student</span>
+      <span class="detail-value"><%= link_to "#{@result.enrolment.student.first_name} #{@result.enrolment.student.last_name} (#{@result.enrolment.student.student_number})", student_path(@result.enrolment.student), class: "action-link" %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Unit</span>
+      <span class="detail-value"><%= link_to "#{@result.enrolment.unit.code} — #{@result.enrolment.unit.name}", unit_path(@result.enrolment.unit), class: "action-link" %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Semester</span>
+      <span class="detail-value"><%= @result.enrolment.semester %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Academic Year</span>
+      <span class="detail-value"><%= @result.enrolment.academic_year %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Mark</span>
+      <span class="detail-value"><%= @result.mark %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Grade</span>
+      <span class="detail-value"><%= @result.grade %></span>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 class Result < ApplicationRecord
   belongs_to :enrolment
 
+  validates :enrolment_id, uniqueness: { message: "already has a recorded result" }
   validates :mark, presence: true,
                    numericality: { greater_than_or_equal_to: 0,
                                    less_than_or_equal_to: 100 }

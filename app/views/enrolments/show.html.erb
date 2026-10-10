@@ -36,13 +36,20 @@
         <span class="detail-label">Mark / Grade</span>
         <span class="detail-value"><%= @enrolment.result.mark %> / <%= @enrolment.result.grade %></span>
       </div>
+    <% else %>
+      <div class="detail-item">
+        <span class="detail-label">Result</span>
+        <span class="detail-value">No result recorded</span>
+      </div>
     <% end %>
   </div>
 </div>
 
 <% if @enrolment.result %>
   <div class="alert" role="status">This enrolment has a recorded academic result and cannot be removed.</div>
+  <%= link_to "Edit Result", edit_result_path(@enrolment.result), class: "btn btn-primary" %>
 <% else %>
+  <%= link_to "Record Result", new_result_path(enrolment_id: @enrolment.id), class: "btn btn-primary" %>
   <%= button_to "Remove Enrolment", enrolment_path(@enrolment), method: :delete,
         class: "btn btn-secondary",
         form: { data: { turbo_confirm: "Remove this unit enrolment?" } } %>
