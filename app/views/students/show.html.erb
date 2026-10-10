@@ -1,2 +1,73 @@
-<h1>Students#show</h1>
-<p>Find me in app/views/students/show.html.erb</p>
+<div class="page-header">
+  <div>
+    <h1>Student Details</h1>
+    <p class="page-description">
+      View the student's personal and academic information.
+    </p>
+  </div>
+
+  <div class="form-actions">
+    <%= link_to "Edit Student", edit_student_path(@student), class: "btn btn-primary" %>
+    <%= link_to "Back to Students", students_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<div class="card student-details-card">
+  <h2>
+    <%= @student.first_name %> <%= @student.last_name %>
+  </h2>
+
+  <div class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Student Number</span>
+      <span class="detail-value"><%= @student.student_number %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Email Address</span>
+      <span class="detail-value"><%= @student.email %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Course</span>
+      <span class="detail-value"><%= @student.course.name %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Course Code</span>
+      <span class="detail-value"><%= @student.course.code %></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Enrolled Units</h2>
+
+  <% if @student.units.any? %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Unit Code</th>
+            <th>Unit Name</th>
+            <th>Credits</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @student.units.each do |unit| %>
+            <tr>
+              <td><%= unit.code %></td>
+              <td><%= unit.name %></td>
+              <td><%= unit.credit %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="page-description">
+      No units have been enrolled for this student yet.
+    </p>
+  <% end %>
+</div>

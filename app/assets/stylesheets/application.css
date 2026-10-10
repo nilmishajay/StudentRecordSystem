@@ -380,3 +380,124 @@ input[type="submit"] {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Student form */
+.student-form-card {
+  max-width: 760px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-control {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  color: #334155;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.alert-error {
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert-error h3 {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* Student details page */
+.student-details-card {
+  margin-bottom: 24px;
+}
+
+.student-details-card h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-label {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.detail-value {
+  color: #1e293b;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,8 +1,7 @@
-
 class Student < ApplicationRecord
   belongs_to :course
-  has_many :enrolements
-  has_many :units, through: :enrolements
+  has_many :enrolments
+  has_many :units, through: :enrolments
 
   validates :student_number, presence: true, uniqueness: true
   validates :first_name, presence: true
