@@ -1,2 +1,8 @@
-<h1>Students#edit</h1>
-<p>Find me in app/views/students/edit.html.erb</p>
+<div class="page-header">
+  <div>
+    <h1>Edit Student</h1>
+    <p class="page-description">Update the student's details and assigned course.</p>
+  </div>
+</div>
+
+<%= render "form", student: @student %>

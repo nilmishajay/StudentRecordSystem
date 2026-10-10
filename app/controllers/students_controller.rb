@@ -34,12 +34,19 @@ class StudentsController < ApplicationController
   end
 
   def destroy
-    if @student.destroy
+    if @student.enrolments.exists?
+      redirect_to students_path,
+                  alert: "Student cannot be deleted because enrolments or academic results are associated with this record."
+    elsif @student.destroy
       redirect_to students_path, notice: "Student was successfully deleted."
     else
       redirect_to students_path,
-                  alert: "Student could not be deleted because related records exist."
+                  alert: @student.errors.full_messages.to_sentence.presence ||
+                         "Student could not be deleted because related records exist."
     end
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to students_path,
+                alert: "Student cannot be deleted because enrolments or academic results are associated with this record."
   end
 
   private
