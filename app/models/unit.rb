@@ -1,6 +1,6 @@
 class Unit < ApplicationRecord
   belongs_to :course
-  has_many :enrolments
+  has_many :enrolments, dependent: :restrict_with_error
   has_many :students, through: :enrolments
 
   validates :code, presence: true

@@ -2,9 +2,17 @@
 <div class="page-header">
   <div>
     <h1>Academic Units</h1>
-    <p class="page-description">View units and their associated courses.</p>
+    <p class="page-description">Manage units, credit values, and their associated courses.</p>
   </div>
+  <%= link_to "＋ Add Unit", new_unit_path, class: "btn btn-primary" %>
 </div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
 
 <div class="card">
   <% if @units.any? %>
@@ -16,7 +24,7 @@
             <th>Unit Name</th>
             <th>Credits</th>
             <th>Course</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -25,9 +33,13 @@
               <td><%= unit.code %></td>
               <td><%= unit.name %></td>
               <td><%= unit.credit %></td>
-              <td><%= unit.course.name %></td>
+              <td><%= link_to unit.course.name, course_path(unit.course), class: "action-link" %></td>
               <td>
                 <%= link_to "View", unit_path(unit), class: "action-link" %>
+                <%= link_to "Edit", edit_unit_path(unit), class: "action-link" %>
+                <%= button_to "Delete", unit_path(unit), method: :delete,
+                      class: "action-link action-delete",
+                      form: { data: { turbo_confirm: "Delete this unit?" } } %>
               </td>
             </tr>
           <% end %>
@@ -37,7 +49,8 @@
   <% else %>
     <div class="empty-state">
       <h3>No academic units available</h3>
-      <p>Unit records will appear here once they are added.</p>
+      <p>Create an academic unit and assign it to a course.</p>
+      <%= link_to "Add Unit", new_unit_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

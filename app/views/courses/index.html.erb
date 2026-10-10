@@ -2,9 +2,17 @@
 <div class="page-header">
   <div>
     <h1>Courses</h1>
-    <p class="page-description">View and manage available courses.</p>
+    <p class="page-description">Manage courses and their students and units.</p>
   </div>
+  <%= link_to "＋ Add Course", new_course_path, class: "btn btn-primary" %>
 </div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
 
 <div class="card">
   <% if @courses.any? %>
@@ -16,7 +24,7 @@
             <th>Course Name</th>
             <th>Students</th>
             <th>Units</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +36,10 @@
               <td><%= course.units.count %></td>
               <td>
                 <%= link_to "View", course_path(course), class: "action-link" %>
+                <%= link_to "Edit", edit_course_path(course), class: "action-link" %>
+                <%= button_to "Delete", course_path(course), method: :delete,
+                      class: "action-link action-delete",
+                      form: { data: { turbo_confirm: "Delete this course?" } } %>
               </td>
             </tr>
           <% end %>
@@ -37,7 +49,8 @@
   <% else %>
     <div class="empty-state">
       <h3>No courses available</h3>
-      <p>Course records will appear here once they are added.</p>
+      <p>Create a course to begin organizing students and academic units.</p>
+      <%= link_to "Add Course", new_course_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

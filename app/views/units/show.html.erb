@@ -1,0 +1,61 @@
+<div class="page-header">
+  <div>
+    <h1><%= @unit.name %></h1>
+    <p class="page-description">Unit details and enrolled students.</p>
+  </div>
+  <div class="form-actions">
+    <%= link_to "Edit Unit", edit_unit_path(@unit), class: "btn btn-primary" %>
+    <%= link_to "Back to Units", units_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="card student-details-card">
+  <div class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Unit Code</span>
+      <span class="detail-value"><%= @unit.code %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Credits</span>
+      <span class="detail-value"><%= @unit.credit %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Course</span>
+      <span class="detail-value"><%= link_to @unit.course.name, course_path(@unit.course), class: "action-link" %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Course Code</span>
+      <span class="detail-value"><%= @unit.course.code %></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Enrolled Students</h2>
+  <% if @students.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead><tr><th>Student Number</th><th>Name</th><th>Course</th><th>Action</th></tr></thead>
+        <tbody>
+          <% @students.each do |student| %>
+            <tr>
+              <td><%= student.student_number %></td>
+              <td><%= link_to "#{student.first_name} #{student.last_name}", student_path(student), class: "action-link" %></td>
+              <td><%= link_to student.course.name, course_path(student.course), class: "action-link" %></td>
+              <td><%= link_to "View", student_path(student), class: "action-link" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state"><p>No students are enrolled in this unit yet.</p></div>
+  <% end %>
+</div>

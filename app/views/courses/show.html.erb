@@ -1,0 +1,82 @@
+<div class="page-header">
+  <div>
+    <h1><%= @course.name %></h1>
+    <p class="page-description">Course details and associated academic units.</p>
+  </div>
+  <div class="form-actions">
+    <%= link_to "Edit Course", edit_course_path(@course), class: "btn btn-primary" %>
+    <%= link_to "Back to Courses", courses_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="notice" role="status"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="card student-details-card">
+  <div class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Course Code</span>
+      <span class="detail-value"><%= @course.code %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Description</span>
+      <span class="detail-value"><%= @course.description.presence || "No description provided." %></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="page-header">
+    <div><h2>Academic Units</h2></div>
+    <%= link_to "＋ Add Unit", new_unit_path(course_id: @course.id), class: "btn btn-primary" %>
+  </div>
+  <% if @units.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead><tr><th>Code</th><th>Name</th><th>Credits</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% @units.each do |unit| %>
+            <tr>
+              <td><%= unit.code %></td>
+              <td><%= unit.name %></td>
+              <td><%= unit.credit %></td>
+              <td>
+                <%= link_to "View", unit_path(unit), class: "action-link" %>
+                <%= link_to "Edit", edit_unit_path(unit), class: "action-link" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state"><p>No units are assigned to this course yet.</p></div>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>Students</h2>
+  <% if @students.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead><tr><th>Student Number</th><th>Name</th><th>Email</th><th>Action</th></tr></thead>
+        <tbody>
+          <% @students.each do |student| %>
+            <tr>
+              <td><%= student.student_number %></td>
+              <td><%= link_to "#{student.first_name} #{student.last_name}", student_path(student), class: "action-link" %></td>
+              <td><%= student.email %></td>
+              <td><%= link_to "View", student_path(student), class: "action-link" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state"><p>No students are assigned to this course yet.</p></div>
+  <% end %>
+</div>
