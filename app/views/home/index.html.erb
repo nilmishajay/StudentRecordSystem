@@ -1,95 +1,70 @@
-<div class="dashboard">
 
-  <header class="dashboard-header">
-    <div>
-      <h1>Student Record System</h1>
-      <p>Academic Records Dashboard</p>
-    </div>
+<div class="dashboard-container">
 
-    <div class="user-info">
-      <span>
-        <strong><%= current_user.username %></strong>
-        (<%= current_user.role.capitalize %>)
-      </span>
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>
+      Welcome back, <strong><%= current_user.username %></strong>.
+      Manage and view academic records from one place.
+    </p>
+  </div>
 
-      <%= button_to "Logout", logout_path, method: :delete, class: "logout-button" %>
-    </div>
-  </header>
+  <!-- Dashboard statistics -->
+  <div class="stats-grid">
 
-  <main class="dashboard-content">
-
-    <% if flash[:notice] %>
-      <div class="notice">
-        <%= flash[:notice] %>
-      </div>
+    <%= link_to students_path, class: "stat-card" do %>
+      <h3>Students</h3>
+      <p class="stat-number"><%= Student.count %></p>
     <% end %>
 
-    <% if flash[:alert] %>
-      <div class="alert">
-        <%= flash[:alert] %>
-      </div>
+    <%= link_to courses_path, class: "stat-card" do %>
+      <h3>Courses</h3>
+      <p class="stat-number"><%= Course.count %></p>
     <% end %>
 
-    <section class="welcome-section">
-      <h2>Dashboard</h2>
-      <p>
-        Welcome back, <strong><%= current_user.username %></strong>.
-        Manage and view academic records from one place.
-      </p>
-    </section>
+    <%= link_to units_path, class: "stat-card" do %>
+      <h3>Units</h3>
+      <p class="stat-number"><%= Unit.count %></p>
+    <% end %>
 
-    <section class="statistics">
+    <%= link_to results_path, class: "stat-card" do %>
+      <h3>Results</h3>
+      <p class="stat-number"><%= Result.count %></p>
+    <% end %>
 
-      <div class="stat-card">
+  </div>
+
+  <!-- Quick actions -->
+  <section class="quick-actions-section">
+    <h2>Quick Actions</h2>
+
+    <div class="quick-actions-grid">
+
+      <%= link_to students_path, class: "quick-action-card" do %>
         <h3>Students</h3>
-        <p><%= @student_count %></p>
-      </div>
+        <p>View and manage student records.</p>
+        <span>Manage Students →</span>
+      <% end %>
 
-      <div class="stat-card">
+      <%= link_to courses_path, class: "quick-action-card" do %>
         <h3>Courses</h3>
-        <p><%= @course_count %></p>
-      </div>
+        <p>View and manage available courses.</p>
+        <span>Manage Courses →</span>
+      <% end %>
 
-      <div class="stat-card">
+      <%= link_to units_path, class: "quick-action-card" do %>
         <h3>Units</h3>
-        <p><%= @unit_count %></p>
-      </div>
+        <p>View and manage academic units.</p>
+        <span>Manage Units →</span>
+      <% end %>
 
-      <div class="stat-card">
+      <%= link_to results_path, class: "quick-action-card" do %>
         <h3>Results</h3>
-        <p><%= @result_count %></p>
-      </div>
+        <p>View and manage academic results.</p>
+        <span>Manage Results →</span>
+      <% end %>
 
-    </section>
-
-    <section class="quick-actions">
-      <h2>Quick Actions</h2>
-
-      <div class="action-grid">
-
-        <a href="#" class="action-card">
-          <h3>Students</h3>
-          <p>View and manage student records.</p>
-        </a>
-
-        <a href="#" class="action-card">
-          <h3>Courses</h3>
-          <p>View available courses.</p>
-        </a>
-
-        <a href="#" class="action-card">
-          <h3>Units</h3>
-          <p>View academic units.</p>
-        </a>
-
-        <a href="#" class="action-card">
-          <h3>Results</h3>
-          <p>View academic results.</p>
-        </a>
-
-      </div>
-    </section>
-
-  </main>
+    </div>
+  </section>
 
 </div>

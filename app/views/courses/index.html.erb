@@ -1,0 +1,45 @@
+
+<div class="page-header">
+  <div>
+    <h1>Courses</h1>
+    <p class="page-description">View and manage available courses.</p>
+  </div>
+</div>
+
+<div class="card">
+  <% if @courses.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Students</th>
+            <th>Units</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @courses.each do |course| %>
+            <tr>
+              <td><%= course.code %></td>
+              <td><%= course.name %></td>
+              <td><%= course.students.count %></td>
+              <td><%= course.units.count %></td>
+              <td>
+                <%= link_to "View", course_path(course), class: "action-link" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <h3>No courses available</h3>
+      <p>Course records will appear here once they are added.</p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "← Back to Dashboard", root_path, class: "action-link" %>

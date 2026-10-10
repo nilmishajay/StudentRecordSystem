@@ -1,0 +1,45 @@
+
+<div class="page-header">
+  <div>
+    <h1>Academic Units</h1>
+    <p class="page-description">View units and their associated courses.</p>
+  </div>
+</div>
+
+<div class="card">
+  <% if @units.any? %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Unit Code</th>
+            <th>Unit Name</th>
+            <th>Credits</th>
+            <th>Course</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @units.each do |unit| %>
+            <tr>
+              <td><%= unit.code %></td>
+              <td><%= unit.name %></td>
+              <td><%= unit.credit %></td>
+              <td><%= unit.course.name %></td>
+              <td>
+                <%= link_to "View", unit_path(unit), class: "action-link" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <h3>No academic units available</h3>
+      <p>Unit records will appear here once they are added.</p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "← Back to Dashboard", root_path, class: "action-link" %>
