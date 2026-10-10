@@ -13,6 +13,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_response :success
-    assert_select "strong", text: user.username
+    assert_select "h1", text: /Welcome back, #{user.username}/
+    assert_select "header", text: /Edith Cowan University/
+    assert_select ".brand-copy", text: /Student Academic Records Portal/
+    assert_select ".sidebar-navigation a[href=?][aria-current='page']", root_path
+    assert_select ".stat-card", 5
+    assert_select ".stat-card", text: /Students/
+    assert_select ".stat-card", text: /Enrolments/
+    assert_select ".stat-card", text: /Results/
   end
 end

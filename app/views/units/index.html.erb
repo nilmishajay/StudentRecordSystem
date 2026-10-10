@@ -7,13 +7,6 @@
   <%= link_to "＋ Add Unit", new_unit_path, class: "btn btn-primary" %>
 </div>
 
-<% if flash[:alert].present? %>
-  <div class="alert alert-error" role="alert"><%= flash[:alert] %></div>
-<% end %>
-<% if flash[:notice].present? %>
-  <div class="notice" role="status"><%= flash[:notice] %></div>
-<% end %>
-
 <div class="card">
   <% if @units.any? %>
     <div class="table-responsive">

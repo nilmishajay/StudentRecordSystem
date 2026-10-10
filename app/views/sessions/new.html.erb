@@ -1,28 +1,30 @@
-<div class="login-container">
-  <h1>Student Record System</h1>
-  <h2>Login</h2>
-
-  <% if flash[:alert] %>
-    <p class="alert"><%= flash[:alert] %></p>
-  <% end %>
-
-  <% if flash[:notice] %>
-    <p class="notice"><%= flash[:notice] %></p>
-  <% end %>
-
-  <%= form_with url: login_path, method: :post do |form| %>
+<section class="login-page" aria-labelledby="login-title">
+  <div class="login-brand">
+    <span class="brand-monogram brand-monogram-large" aria-hidden="true">ECU</span>
     <div>
-      <%= form.label :username %>
-      <%= form.text_field :username, required: true %>
+      <p class="login-university">Edith Cowan University</p>
+      <h1 id="login-title">Student Academic Records Portal</h1>
     </div>
+  </div>
 
-    <div>
-      <%= form.label :password %>
-      <%= form.password_field :password, required: true %>
-    </div>
+  <div class="login-card">
+    <p class="eyebrow">Secure access</p>
+    <h2>Sign in</h2>
+    <p class="login-intro">Use your existing portal account to continue.</p>
 
-    <div>
-      <%= form.submit "Login" %>
-    </div>
-  <% end %>
-</div>
+    <%= form_with url: login_path, method: :post, class: "login-form" do |form| %>
+      <div class="form-group">
+        <%= form.label :username, "Username or email" %>
+        <%= form.text_field :username, autocomplete: "username", required: true, autofocus: true, class: "form-control", placeholder: "admin or name@example.com" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :password, "Password" %>
+        <%= form.password_field :password, autocomplete: "current-password", required: true, class: "form-control" %>
+      </div>
+
+      <%= form.submit "Sign in", class: "btn btn-primary login-submit" %>
+    <% end %>
+    <p class="login-note">This academic project uses its existing account authentication. ECU single sign-on is not provided.</p>
+  </div>
+</section>

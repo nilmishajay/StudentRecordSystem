@@ -1,70 +1,60 @@
 
-<div class="dashboard-container">
-
-  <div class="dashboard-header">
-    <h1>Dashboard</h1>
-    <p>
-      Welcome back, <strong><%= current_user.username %></strong>.
-      Manage and view academic records from one place.
-    </p>
+<section class="dashboard-page" aria-labelledby="dashboard-title">
+  <div class="dashboard-welcome">
+    <div>
+      <p class="eyebrow">Academic records overview</p>
+      <h1 id="dashboard-title">Welcome back, <%= current_user.username %></h1>
+      <p class="page-description">Manage student, course, enrolment, and assessment records from one place.</p>
+    </div>
+    <%= link_to "＋ Add Student", new_student_path, class: "btn btn-primary" %>
   </div>
 
-  <!-- Dashboard statistics -->
-  <div class="stats-grid">
-
-    <%= link_to students_path, class: "stat-card" do %>
-      <h3>Students</h3>
-      <p class="stat-number"><%= Student.count %></p>
-    <% end %>
-
-    <%= link_to courses_path, class: "stat-card" do %>
-      <h3>Courses</h3>
-      <p class="stat-number"><%= Course.count %></p>
-    <% end %>
-
-    <%= link_to units_path, class: "stat-card" do %>
-      <h3>Units</h3>
-      <p class="stat-number"><%= Unit.count %></p>
-    <% end %>
-
-    <%= link_to results_path, class: "stat-card" do %>
-      <h3>Results</h3>
-      <p class="stat-number"><%= Result.count %></p>
-    <% end %>
-
-  </div>
-
-  <!-- Quick actions -->
-  <section class="quick-actions-section">
-    <h2>Quick Actions</h2>
-
-    <div class="quick-actions-grid">
-
-      <%= link_to students_path, class: "quick-action-card" do %>
-        <h3>Students</h3>
-        <p>View and manage student records.</p>
-        <span>Manage Students →</span>
+  <section aria-labelledby="records-heading">
+    <div class="section-heading">
+      <div>
+        <h2 id="records-heading">Records at a glance</h2>
+        <p class="page-description">Current totals from the records database.</p>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <% [
+        ["Students", @student_count, students_path, "students"],
+        ["Courses", @course_count, courses_path, "courses"],
+        ["Units", @unit_count, units_path, "units"],
+        ["Enrolments", @enrolment_count, enrolments_path, "enrolments"],
+        ["Results", @result_count, results_path, "results"]
+      ].each do |label, count, path, icon| %>
+        <%= link_to path, class: "stat-card", aria: { label: "#{label}: #{count}. Open #{label.downcase}." } do %>
+          <span class="stat-icon"><%= navigation_icon(icon) %></span>
+          <span class="stat-label"><%= label %></span>
+          <span class="stat-number"><%= count %></span>
+          <span class="stat-caption"><%= count.zero? ? "No records yet" : "View records" %></span>
+        <% end %>
       <% end %>
-
-      <%= link_to courses_path, class: "quick-action-card" do %>
-        <h3>Courses</h3>
-        <p>View and manage available courses.</p>
-        <span>Manage Courses →</span>
-      <% end %>
-
-      <%= link_to units_path, class: "quick-action-card" do %>
-        <h3>Units</h3>
-        <p>View and manage academic units.</p>
-        <span>Manage Units →</span>
-      <% end %>
-
-      <%= link_to results_path, class: "quick-action-card" do %>
-        <h3>Results</h3>
-        <p>View and manage academic results.</p>
-        <span>Manage Results →</span>
-      <% end %>
-
     </div>
   </section>
 
-</div>
+  <section class="quick-actions-section" aria-labelledby="quick-actions-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="quick-actions-title">Manage records</h2>
+        <p class="page-description">Choose an area to review or update.</p>
+      </div>
+    </div>
+    <div class="quick-actions-grid">
+      <% [
+        ["Students", "Review profiles and academic records.", students_path, "students"],
+        ["Courses", "Maintain course information and units.", courses_path, "courses"],
+        ["Units", "Review units and credit values.", units_path, "units"],
+        ["Enrolments", "Manage student unit enrolments by term.", enrolments_path, "enrolments"],
+        ["Results", "Record and review marks and grades.", results_path, "results"]
+      ].each do |label, description, path, icon| %>
+        <%= link_to path, class: "quick-action-card" do %>
+          <span class="quick-action-icon"><%= navigation_icon(icon) %></span>
+          <span class="quick-action-copy"><strong><%= label %></strong><span><%= description %></span></span>
+          <span class="quick-action-arrow" aria-hidden="true">→</span>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+</section>

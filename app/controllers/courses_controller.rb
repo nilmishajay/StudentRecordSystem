@@ -60,8 +60,3 @@ class CoursesController < ApplicationController
     params.require(:course).permit(:code, :name, :description)
   end
 end
-
-
-
-
-

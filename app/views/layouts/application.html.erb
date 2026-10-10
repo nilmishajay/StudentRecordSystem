@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Student Record System" %></title>
+    <title><%= content_for(:title) || "Student Academic Records Portal | Edith Cowan University" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Student Record System">
+    <meta name="application-name" content="Student Academic Records Portal">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -23,7 +23,78 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="<%= current_user ? "app-body" : "auth-body" %>">
+    <% if current_user %>
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <header class="app-topbar">
+        <%= link_to root_path, class: "brand-lockup", aria: { label: "Edith Cowan University Student Academic Records Portal home" } do %>
+          <span class="brand-monogram" aria-hidden="true">ECU</span>
+          <span class="brand-copy">
+            <strong>Edith Cowan University</strong>
+            <span>Student Academic Records Portal</span>
+          </span>
+        <% end %>
+        <div class="topbar-account">
+          <span class="account-avatar" aria-hidden="true"><%= current_user.username.first&.upcase || "U" %></span>
+          <span class="account-name"><%= current_user.username %></span>
+          <%= button_to "Log out", logout_path, method: :delete, class: "logout-link", form: { class: "logout-form" } %>
+        </div>
+      </header>
+
+      <nav class="mobile-navigation" aria-label="Primary navigation">
+        <ul>
+          <% navigation_items.each do |label, path, controller, icon| %>
+            <li>
+              <%= link_to path, class: (navigation_active?(controller) ? "mobile-nav-link is-active" : "mobile-nav-link"), aria: { current: (navigation_active?(controller) ? "page" : nil) } do %>
+                <%= navigation_icon(icon) %><span><%= label %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+
+      <div class="app-shell">
+        <aside class="sidebar">
+          <p class="sidebar-label">Workspace</p>
+          <nav aria-label="Primary navigation">
+            <ul class="sidebar-navigation">
+              <% navigation_items.each do |label, path, controller, icon| %>
+                <li>
+                  <%= link_to path, class: (navigation_active?(controller) ? "sidebar-link is-active" : "sidebar-link"), aria: { current: (navigation_active?(controller) ? "page" : nil) } do %>
+                    <%= navigation_icon(icon) %><span><%= label %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </nav>
+          <div class="sidebar-bottom">
+            <span class="sidebar-caption">Academic Records</span>
+            <%= button_to logout_path, method: :delete, class: "sidebar-logout", form: { class: "logout-form" } do %>
+              <span aria-hidden="true">↪</span> Log out
+            <% end %>
+          </div>
+        </aside>
+
+        <div class="main-column">
+          <main id="main-content" class="main-content" tabindex="-1">
+            <div class="breadcrumb" aria-label="Breadcrumb">
+              <%= link_to "Workspace", root_path %>
+              <span aria-hidden="true">/</span>
+              <span aria-current="page"><%= navigation_items.find { |_label, _path, controller, _icon| navigation_active?(controller) }&.first || "Records" %></span>
+            </div>
+            <%= render "layouts/flash_messages" %>
+            <%= yield %>
+          </main>
+          <footer class="app-footer">Student Record System — Academic project.</footer>
+        </div>
+      </div>
+    <% else %>
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <main id="main-content" class="auth-main">
+        <%= render "layouts/flash_messages" %>
+        <%= yield %>
+      </main>
+      <footer class="auth-footer">Student Record System — Academic project.</footer>
+    <% end %>
   </body>
 </html>
